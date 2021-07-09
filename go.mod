@@ -1,4 +1,4 @@
-module github.com/p12s/fintech-link-shorter
+module github.com/p12s/2gis-catalog-api
 
 go 1.16
 
