@@ -1,12 +1,13 @@
 package main
 
 import (
-	"fmt"
-	"github.com/p12s/2gis-catalog-api"
+	"github.com/joho/godotenv"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
-func main() {
-	company := &common.Company{
+/*
+company := &common.Company{
 		Id: 1,
 		Name: "Yandex",
 		Phones: []string{"22-22-22", "33-33-33"},
@@ -39,5 +40,26 @@ func main() {
 			},
 		},
 	}
-	fmt.Println(company)
+ */
+
+// @title Catalog App API
+// @version 0.0.1
+// @description API Server for company catalog
+// @host localhost:80
+// @BasePath /
+func main() {
+	logrus.SetFormatter(new(logrus.JSONFormatter))
+	if err := initConfig(); err != nil {
+		logrus.Fatalf("👺👺👺 error init configs/config.yml file: %s", err.Error())
+	}
+	if err := godotenv.Load(); err != nil {
+		logrus.Fatalf("👺👺👺 error load .env file variables: %s", err.Error())
+	}
+
+}
+
+func initConfig() error {
+	viper.AddConfigPath("configs")
+	viper.SetConfigName("config")
+	return viper.ReadInConfig()
 }
