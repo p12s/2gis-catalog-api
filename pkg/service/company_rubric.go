@@ -1,7 +1,6 @@
 package service
 
 import (
-	"github.com/p12s/2gis-catalog-api"
 	"github.com/p12s/2gis-catalog-api/pkg/repository"
 )
 

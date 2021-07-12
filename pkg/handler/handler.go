@@ -1,9 +1,8 @@
 package handler
 
 import (
-	httptransport "github.com/go-kit/kit/transport/http"
+	"github.com/gin-gonic/gin"
 	"github.com/p12s/2gis-catalog-api/pkg/service"
-	"net/http"
 )
 
 type Handler struct {
@@ -15,18 +14,17 @@ func NewHandler(services *service.Service) *Handler {
 	return &Handler{services: services}
 }
 
-func (h *Handler) InitHandler() {
-	http.Handle("/uppercase", httptransport.NewServer(
-		makeUppercaseEndpoint(svc),
-		decodeUppercaseRequest,
-		encodeResponse,
-	))
 
+// InitRoutes - инициализаруем пути и их хендлеры
+func (h *Handler) InitRoutes() *gin.Engine {
+	router := gin.New()
+
+	api := router.Group("/api")
+	{
+		city := api.Group("/city")
+		{
+			city.POST("/", h.createCity)
+		}
+	}
+	return router
 }
-
-func ret()
-uppercaseHandler := httptransport.NewServer(
-makeUppercaseEndpoint(svc),
-decodeUppercaseRequest,
-encodeResponse,
-)

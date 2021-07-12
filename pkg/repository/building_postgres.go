@@ -2,7 +2,7 @@ package repository
 
 import (
 	"github.com/jmoiron/sqlx"
-	common "github.com/p12s/2gis-catalog-api"
+	"github.com/p12s/2gis-catalog-api"
 )
 
 // BuildingPostgres - репозиторий
