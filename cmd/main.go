@@ -2,8 +2,11 @@ package main
 
 import (
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
+	"github.com/p12s/2gis-catalog-api/pkg/repository"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"os"
 )
 
 /*
@@ -40,7 +43,7 @@ company := &common.Company{
 			},
 		},
 	}
- */
+*/
 
 // @title Catalog App API
 // @version 0.0.1
@@ -56,6 +59,24 @@ func main() {
 		logrus.Fatalf("👺👺👺 error load .env file variables: %s", err.Error())
 	}
 
+	db, err := repository.NewPostgresDB(repository.Config{
+		Driver:   viper.GetString("db.driver"),
+		Host:     viper.GetString("db.host"),
+		Port:     viper.GetString("db.port"),
+		Username: viper.GetString("db.username"),
+		Password: os.Getenv("DB_PASSWORD"),
+		DBName:   viper.GetString("db.dbname"),
+		SSLMode:  viper.GetString("db.sslmode"),
+	})
+	if err != nil {
+		logrus.Fatalf("👺👺👺 failed to initialize db: %s\n", err.Error())
+	}
+
+
+
+	if err := db.Close(); err != nil {
+		logrus.Errorf("error occured on db connection close: %s", err.Error())
+	}
 }
 
 func initConfig() error {

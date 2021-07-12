@@ -1,4 +1,4 @@
-![License](https://img.shields.io/github/license/p12s/ispring-todo-list-api)
+![License](https://img.shields.io/github/license/p12s/2gis-catalog-api)
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/p12s/2gis-catalog-api?style=plastic)
 [![Coverage Status](https://codecov.io/gh/p12s/2gis-catalog-api/branch/master/graph/badge.svg?token=sTWAW1J7hW)](https://codecov.io/gh/p12s/2gis-catalog-api)
 [![Go Report Card](https://goreportcard.com/badge/github.com/p12s/2gis-catalog-api)](https://goreportcard.com/report/github.com/p12s/2gis-catalog-api)
@@ -31,10 +31,16 @@
   **Go**
 - ❌ БД: Любая реляционная (например, PostgreSQL или MySQL)
 - ❇️ [Go-kit](https://github.com/go-kit/kit) как библиотека для микросервисов
-- ❇️ [Go-chi](https://github.com/go-chi/chi) для роутинга
-mongo??
-
-
+- ❇️ [Go-chi](https://github.com/go-chi/chi) для роутинга  
+- mongo??
+  
 ## Добавил от себя
 - бейдж с %-ом покрытия unit-тестами (сейчас 0%)
 - бейдж с результатом запуска тестов и пробной сборки в Github Actions для master-ветки
+
+## Что можно улучшить
+- Покрыть код unit-тестами (пока только интеграционные - с помощью postman)
+- Настроить запуск сервиса с помощью docker-compose, чтобы поднимался сервис и БД (сейчас контейнер с postgres поднимаю руками + накатываю миграции)
+- Проверить, как работают индексы в БД под нагрузкой, убедиться в оптимальности
+- Забенчмаркать с помощью wrk для проверки производительности
+- Отпрофилировать с помощью pprof и по-возможности, зарефакторить. А после снова забенчмаркать  
