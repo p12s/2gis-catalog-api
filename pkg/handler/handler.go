@@ -3,6 +3,11 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/p12s/2gis-catalog-api/pkg/service"
+
+	"github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
+
+	_ "github.com/p12s/2gis-catalog-api/docs"
 )
 
 type Handler struct {
@@ -17,6 +22,8 @@ func NewHandler(services *service.Service) *Handler {
 // InitRoutes - инициализаруем пути и их хендлеры
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	api := router.Group("/api")
 	{

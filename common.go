@@ -43,21 +43,22 @@ type Rubric struct {
 	ParentRubricId int    `json:"parent_rubric_id" db:"parent_rubric_id"`
 }
 
+// CompanyCreateRequest - пришедший запрос на создание компании
 type CompanyCreateRequest struct {
 	Name   string `json:"name"`
 	Phones []struct {
 		CompanyId int    `json:"-"`
-		Number    string `json:"number"`
+		Number    string `json:"number"` // номер телефона
 	} `json:"phones"`
 	Building struct {
 		Id       int    `json:"-"`
-		CityId   int    `json:"city_id"`
-		StreetId int    `json:"street_id"`
+		CityId   int    `json:"city_id"` // id города должен существовать в БД
+		StreetId int    `json:"street_id"` // id улицы с привязкой к городу должен существовать в БД
 		House    int    `json:"house"`
-		Point    string `json:"point"`
+		Point    string `json:"point"` // в формате "(1.00234567, -90.00876211)"
 	} `json:"building"`
 	Rubric []struct {
-		Id             int    `json:"id"`
+		Id             int    `json:"id"` // id рубрики должен существовать в БД
 		Name           string `json:"-"`
 		ParentRubricId int    `json:"-"`
 	} `json:"rubric"`
