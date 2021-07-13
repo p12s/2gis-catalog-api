@@ -1,15 +1,12 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/p12s/2gis-catalog-api"
 	"net/http"
 )
 
 func (h *Handler) createCity(c *gin.Context) {
-	fmt.Println("hello from city")
-
 	var input common.City
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())

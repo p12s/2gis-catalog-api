@@ -1,7 +1,6 @@
 package service
 
 import (
-	"github.com/p12s/2gis-catalog-api"
 	"github.com/p12s/2gis-catalog-api/pkg/repository"
 )
 
@@ -13,6 +12,6 @@ func NewBuildingService(repo repository.Building) *BuildingService {
 	return &BuildingService{repo: repo}
 }
 
-func (b *BuildingService) Create(phone common.Phone) (int, error) {
-	return b.repo.Create(phone)
+func (b *BuildingService) Create(cityId, streetId, house int, point string) (int, error) {
+	return b.repo.Create(cityId, streetId, house, point)
 }

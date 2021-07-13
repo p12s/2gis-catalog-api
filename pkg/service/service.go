@@ -6,7 +6,7 @@ import (
 )
 
 type Rubric interface {
-	Create(rubric common.Rubric) (int, error)
+	Create(name string, parentRubricId int) (int, error)
 	GetAll(rubricId int) ([]common.Rubric, error)
 	GetById(rubricId int) (common.Rubric, error)
 	Delete(rubricId int) error
@@ -25,18 +25,18 @@ type Street interface {
 }
 
 type Phone interface {
-	Create(phone common.Phone) (int, error)
+	Create(companyId int, number string) error
 	GetById(phoneId int) (common.Phone, error)
 	Delete(phoneId int) error
 }
 
 type Building interface {
-	Create(phone common.Phone) (int, error)
+	Create(cityId, streetId, house int, point string) (int, error)
 }
 
 // Company - компания
 type Company interface {
-	Create(company common.Company) (int, error)
+	Create(company common.CompanyCreateRequest) (int, error)
 	GetById(companyId int) (common.Company, error)
 	GetAllInBuilding(buildingId int) ([]common.Company, error)
 	GetAllByRubricId(rubricId int) ([]common.Company, error)
@@ -61,12 +61,12 @@ type Service struct {
 // NewService - конструктор
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Rubric:   NewRubricService(repos.Rubric),
-		City:     NewCityService(repos.City),
-		Street:   NewStreetService(repos.Street),
-		Building: NewBuildingService(repos.Building),
-		Company:  NewCompanyService(repos.Company),
-		CompanyRubric:  NewCompanyRubricService(repos.CompanyRubric),
-		Phone:    NewPhoneService(repos.Phone),
+		Rubric:        NewRubricService(repos.Rubric),
+		City:          NewCityService(repos.City),
+		Street:        NewStreetService(repos.Street),
+		Building:      NewBuildingService(repos.Building),
+		Company:       NewCompanyService(repos.Company, repos.Building, repos.Phone, repos.Rubric, repos.CompanyRubric),
+		CompanyRubric: NewCompanyRubricService(repos.CompanyRubric),
+		Phone:         NewPhoneService(repos.Phone),
 	}
 }

@@ -13,8 +13,8 @@ func NewPhoneService(repo repository.Phone) *PhoneService {
 	return &PhoneService{repo: repo}
 }
 
-func (p *PhoneService) Create(phone common.Phone) (int, error) {
-	return p.repo.Create(phone)
+func (p *PhoneService) Create(companyId int, number string) error {
+	return p.repo.Create(companyId, number)
 }
 
 func (p *PhoneService) GetById(phoneId int) (common.Phone, error) {

@@ -14,7 +14,6 @@ func NewHandler(services *service.Service) *Handler {
 	return &Handler{services: services}
 }
 
-
 // InitRoutes - инициализаруем пути и их хендлеры
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
@@ -24,6 +23,10 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		city := api.Group("/city")
 		{
 			city.POST("/", h.createCity)
+		}
+		company := api.Group("/company")
+		{
+			company.POST("/", h.createCompany)
 		}
 	}
 	return router

@@ -13,8 +13,8 @@ func NewRubricService(repo repository.Rubric) *RubricService {
 	return &RubricService{repo: repo}
 }
 
-func (r *RubricService) Create(rubric common.Rubric) (int, error) {
-	return r.repo.Create(rubric)
+func (r *RubricService) Create(name string, parentRubricId int) (int, error) {
+	return r.repo.Create(name, parentRubricId)
 }
 
 func (r *RubricService) GetAll(rubricId int) ([]common.Rubric, error) {
