@@ -26,12 +26,12 @@ type Street interface {
 
 type Phone interface {
 	Create(companyId int, number string) error
-	GetById(phoneId int) (common.Phone, error)
-	Delete(phoneId int) error
+	GetByCompanyId(companyId int) ([]common.Phone, error)
 }
 
 type Building interface {
 	Create(cityId, streetId, house int, point string) (int, error)
+	GetAllCompany(cityId, streetId, house int) ([]common.CompanyResponse, error)
 }
 
 // Company - компания
@@ -64,7 +64,7 @@ func NewService(repos *repository.Repository) *Service {
 		Rubric:        NewRubricService(repos.Rubric),
 		City:          NewCityService(repos.City),
 		Street:        NewStreetService(repos.Street),
-		Building:      NewBuildingService(repos.Building),
+		Building:      NewBuildingService(repos.Building, repos.Company, repos.Phone),
 		Company:       NewCompanyService(repos.Company, repos.Building, repos.Phone, repos.Rubric, repos.CompanyRubric),
 		CompanyRubric: NewCompanyRubricService(repos.CompanyRubric),
 		Phone:         NewPhoneService(repos.Phone),

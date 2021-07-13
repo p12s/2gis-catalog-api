@@ -27,8 +27,7 @@ type Street interface {
 
 type Phone interface {
 	Create(companyId int, number string) error
-	GetById(phoneId int) (common.Phone, error)
-	Delete(phoneId int) error
+	GetByCompanyId(companyId int) ([]common.Phone, error)
 }
 
 type Building interface {

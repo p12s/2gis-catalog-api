@@ -100,7 +100,18 @@ func (c *CompanyPostgres) GetById(companyId int) (common.Company, error) {
 }
 
 func (c *CompanyPostgres) GetAllInBuilding(buildingId int) ([]common.Company, error) {
-	return []common.Company{}, nil
+	var items []common.Company
+
+	//query := fmt.Sprintf(`SELECT ti.id, ti.title, ti.description, ti.done FROM %s ti INNER JOIN %s li on li.item_id = ti.id
+	//								INNER JOIN %s ul on ul.list_id = li.list_id WHERE li.list_id = $1 AND ul.user_id = $2`,
+	//	todoItemsTable, listsItemsTable, usersListsTable)
+	query := fmt.Sprintf(`SELECT id, name FROM %s WHERE building_id = $1`,
+		companyTable)
+	if err := c.db.Select(&items, query, buildingId); err != nil {
+		return nil, err
+	}
+
+	return items, nil
 }
 
 func (c *CompanyPostgres) GetAllByRubricId(rubricId int) ([]common.Company, error) {

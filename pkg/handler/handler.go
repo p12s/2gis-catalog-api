@@ -35,6 +35,10 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			company.POST("/", h.createCompany)
 		}
+		building := api.Group("/building")
+		{
+			building.GET("/all-company", h.getAllCompany)
+		}
 	}
 	return router
 }

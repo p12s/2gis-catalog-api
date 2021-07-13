@@ -11,7 +11,7 @@ type Company struct {
 
 type Phone struct {
 	Id        int    `json:"-" db:"id"`
-	CompanyId int    `json:"company_id" db:"company_id"`
+	CompanyId int    `json:"-" db:"company_id"`
 	Number    string `json:"number" db:"number"`
 }
 
@@ -52,7 +52,7 @@ type CompanyCreateRequest struct {
 	} `json:"phones"`
 	Building struct {
 		Id       int    `json:"-"`
-		CityId   int    `json:"city_id"` // id города должен существовать в БД
+		CityId   int    `json:"city_id"`   // id города должен существовать в БД
 		StreetId int    `json:"street_id"` // id улицы с привязкой к городу должен существовать в БД
 		House    int    `json:"house"`
 		Point    string `json:"point"` // в формате "(1.00234567, -90.00876211)"
@@ -62,4 +62,9 @@ type CompanyCreateRequest struct {
 		Name           string `json:"-"`
 		ParentRubricId int    `json:"-"`
 	} `json:"rubric"`
+}
+
+type CompanyResponse struct {
+	Name   string  `json:"name"`
+	Phones []Phone `json:"phones"`
 }

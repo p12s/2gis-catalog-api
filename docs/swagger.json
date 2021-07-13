@@ -9,6 +9,80 @@
     "host": "localhost:80",
     "basePath": "/",
     "paths": {
+        "/api/building/all-company": {
+            "get": {
+                "description": "Get all company registered in a building",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Building"
+                ],
+                "summary": "Get all company in a building",
+                "operationId": "getAllCompany",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "City id",
+                        "name": "city_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Street id",
+                        "name": "street_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "House id",
+                        "name": "house",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/common.CompanyResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/company/": {
             "post": {
                 "description": "Creating company with minimal required data",
@@ -119,6 +193,28 @@
                             }
                         }
                     }
+                }
+            }
+        },
+        "common.CompanyResponse": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "phones": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/common.Phone"
+                    }
+                }
+            }
+        },
+        "common.Phone": {
+            "type": "object",
+            "properties": {
+                "number": {
+                    "type": "string"
                 }
             }
         },

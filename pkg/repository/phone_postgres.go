@@ -25,10 +25,11 @@ func (p *PhonePostgres) Create(companyId int, number string) error {
 	return nil
 }
 
-func (p *PhonePostgres) GetById(phoneId int) (common.Phone, error) {
-	return common.Phone{}, nil
-}
-
-func (p *PhonePostgres) Delete(phoneId int) error {
-	return nil
+func (p *PhonePostgres) GetByCompanyId(companyId int) ([]common.Phone, error) {
+	var items []common.Phone
+	query := fmt.Sprintf(`SELECT * FROM %s WHERE company_id = $1`, phoneTable)
+	if err := p.db.Select(&items, query, companyId); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
