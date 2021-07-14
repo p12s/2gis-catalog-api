@@ -16,6 +16,7 @@ func NewPhonePostgres(db *sqlx.DB) *PhonePostgres {
 	return &PhonePostgres{db: db}
 }
 
+// Create - создать телефон компании
 func (p *PhonePostgres) Create(companyId int, number string) error {
 	query := fmt.Sprintf("INSERT INTO %s (company_id, number) values ($1, $2)", phoneTable)
 	_, err := p.db.Exec(query, companyId, number)
@@ -25,6 +26,7 @@ func (p *PhonePostgres) Create(companyId int, number string) error {
 	return nil
 }
 
+// GetByCompanyId - получить компанию
 func (p *PhonePostgres) GetByCompanyId(companyId int) ([]common.Phone, error) {
 	var items []common.Phone
 	query := fmt.Sprintf(`SELECT * FROM %s WHERE company_id = $1`, phoneTable)

@@ -6,6 +6,7 @@ import (
 	"github.com/p12s/2gis-catalog-api/pkg/repository"
 )
 
+// CompanyService - сервис компании
 type CompanyService struct {
 	repo              repository.Company
 	repoBuilding      repository.Building
@@ -14,6 +15,7 @@ type CompanyService struct {
 	repoCompanyRubric repository.CompanyRubric
 }
 
+// NewCompanyService - конструктор
 func NewCompanyService(
 	repo repository.Company,
 	repoBuilding repository.Building,
@@ -170,6 +172,7 @@ func (c *CompanyService) Create(requestCompany common.CompanyCreateRequest) (int
 	return companyId, c.repo.CloseTransaction()
 }
 
+// GetById - получить компанию
 func (c *CompanyService) GetById(companyId int) (common.CompanyResponse, error) {
 	result := common.CompanyResponse{}
 	// компания
@@ -189,14 +192,7 @@ func (c *CompanyService) GetById(companyId int) (common.CompanyResponse, error) 
 	return result, nil
 }
 
+// GetAllInBuilding - получить все компании по зданию
 func (c *CompanyService) GetAllInBuilding(buildingId int) ([]common.Company, error) {
 	return c.repo.GetAllInBuilding(buildingId)
-}
-
-func (c *CompanyService) GetAllByRubricId(rubricId int) ([]common.Company, error) {
-	return c.repo.GetAllByRubricId(rubricId)
-}
-
-func (c *CompanyService) Delete(companyId int) error {
-	return c.repo.Delete(companyId)
 }

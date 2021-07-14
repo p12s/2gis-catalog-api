@@ -5,6 +5,7 @@ import (
 	"github.com/p12s/2gis-catalog-api/pkg/repository"
 )
 
+// BuildingService - сервис здания
 type BuildingService struct {
 	repo        repository.Building
 	repoCompany repository.Company
@@ -13,6 +14,7 @@ type BuildingService struct {
 	repoStreet  repository.Street
 }
 
+// NewBuildingService - конструктор
 func NewBuildingService(
 	repo repository.Building,
 	repoCompany repository.Company,
@@ -29,10 +31,12 @@ func NewBuildingService(
 	}
 }
 
+// Create - запись адреса здания по существующим в БД id города, улицы
 func (b *BuildingService) Create(cityId, streetId, house int, point string) (int, error) {
 	return b.repo.Create(cityId, streetId, house, point)
 }
 
+// CreateNew - запись нового адреса, по еще не добавленнным в БД городу и улице
 func (b *BuildingService) CreateNew(building common.BuildingCreateRequest) (int, error) {
 	err := b.repoCompany.OpenTransaction()
 	if err != nil {
@@ -79,6 +83,7 @@ func (b *BuildingService) CreateNew(building common.BuildingCreateRequest) (int,
 	return buildingId, b.repoCompany.CloseTransaction()
 }
 
+// GetAllCompany - получить все компании по адресу здания
 func (b *BuildingService) GetAllCompany(cityId, streetId, house int) ([]common.CompanyResponse, error) {
 
 	var companies []common.CompanyResponse

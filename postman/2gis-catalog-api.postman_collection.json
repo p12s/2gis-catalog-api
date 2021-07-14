@@ -1,0 +1,348 @@
+{
+	"info": {
+		"_postman_id": "199808cd-b0a0-44a0-bb0b-91f94c513326",
+		"name": "5. 2gis-catalog-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Company",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Create company is Ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const response = pm.response.json()",
+									"",
+									"pm.test(\"And return created company id\", () => {",
+									"    isNumber = Number.isInteger(response.id)",
+									"    pm.expect(isNumber).to.be.true",
+									"",
+									"    pm.collectionVariables.set(\"createdCompanyId\", response.id);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomCompanyName}}\",\n    \"phones\": [\n        {\n            \"number\": \"{{$randomPhoneNumber}}\"\n        },\n        {\n            \"number\": \"{{$randomPhoneNumber}}\"\n        }\n    ],\n    \"building\": {\n        \"city_id\": {{cityId}},\n        \"street_id\": {{streetId}},\n        \"house\": {{house}},\n        \"point\": \"(1.00234567, -90.00876211)\"\n    },\n    \"rubric\": [\n        {\n            \"id\": 1\n        },\n        {\n            \"id\": 2\n        },\n        {\n            \"id\": 3\n        }\n    ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/company/",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Get by created company id id Ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/company/?company_id={{createdCompanyId}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"company",
+								""
+							],
+							"query": [
+								{
+									"key": "company_id",
+									"value": "{{createdCompanyId}}",
+									"description": "Created company id (auto-update id)"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Building",
+			"item": [
+				{
+					"name": "Get all company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Get all building company is Ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/building/all-company?city_id={{cityId}}&street_id={{streetId}}&house={{house}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"building",
+								"all-company"
+							],
+							"query": [
+								{
+									"key": "city_id",
+									"value": "{{cityId}}",
+									"description": "Pre-added company city (init migrations)"
+								},
+								{
+									"key": "street_id",
+									"value": "{{streetId}}",
+									"description": "Pre-added company street in this city (init migrations)"
+								},
+								{
+									"key": "house",
+									"value": "{{house}}",
+									"description": "Pre-added compay house number (init migrations)"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Create building address is Ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const response = pm.response.json()",
+									"",
+									"pm.test(\"And return created company id\", () => {",
+									"    isNumber = Number.isInteger(response.id)",
+									"    pm.expect(isNumber).to.be.true",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"city_id\": null,\n\t\"city\": \"{{$randomCity}}\",\n\t\"street_id\": null,\n\t\"street\": \"{{$randomStreetName}}\",\n\t\"house\": {{$randomInt}},\n\t\"point\": \"({{$randomLongitude}}, {{$randomLatitude}})\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/api/building/",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"building",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rubric",
+			"item": [
+				{
+					"name": "GetAllRubricCompany",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Get all rubric company is Ok\", () => {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/api/rubric/all-company?rubric_id={{rubricId}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"rubric",
+								"all-company"
+							],
+							"query": [
+								{
+									"key": "rubric_id",
+									"value": "{{rubricId}}",
+									"description": "Pre-added rubric (init migrations)"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "port",
+			"value": "80"
+		},
+		{
+			"key": "host",
+			"value": "localhost"
+		},
+		{
+			"key": "createdCompanyId",
+			"value": "1"
+		},
+		{
+			"key": "rubricId",
+			"value": "1"
+		},
+		{
+			"key": "cityId",
+			"value": "1"
+		},
+		{
+			"key": "streetId",
+			"value": "1"
+		},
+		{
+			"key": "house",
+			"value": "13"
+		}
+	]
+}

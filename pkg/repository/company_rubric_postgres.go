@@ -16,6 +16,7 @@ func NewCompanyRubricPostgres(db *sqlx.DB) *CompanyRubricPostgres {
 	return &CompanyRubricPostgres{db: db}
 }
 
+// Create - создание
 func (c *CompanyRubricPostgres) Create(companyId, rubricId int) error {
 	query := fmt.Sprintf("INSERT INTO %s (company_id, rubric_id) values ($1, $2)", companyRubricTable)
 	_, err := c.db.Exec(query, companyId, rubricId)
@@ -25,6 +26,7 @@ func (c *CompanyRubricPostgres) Create(companyId, rubricId int) error {
 	return nil
 }
 
+// GetAllRubricCompany - получить все компании по рубрике
 func (c *CompanyRubricPostgres) GetAllRubricCompany(rubricId int) ([]common.Company, error) {
 	var items []common.Company
 	query := fmt.Sprintf(`SELECT c.id, c.name FROM %s c 

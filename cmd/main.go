@@ -15,42 +15,6 @@ import (
 	"syscall"
 )
 
-/*
-company := &common.Company{
-		Id: 1,
-		Name: "Yandex",
-		Phones: []string{"22-22-22", "33-33-33"},
-		Building: common.Building{
-			Address: common.Address{
-				City: "Moscow",
-				Street: "Lenina",
-				House: 1,
-			},
-			Coordinates: common.Coordinates{
-				Longitude: 38.8951,
-				Latitude: -77.0364,
-			},
-		},
-		Rubric: []common.Rubric{
-			{
-				Name: "Интернет-услуги",
-			},
-			{
-				Name: "Услуги доставки",
-			},
-			{
-				Name: "Облачные услуги",
-			},
-			{
-				Name: "Транспортные услуги",
-			},
-			{
-				Name: "Финансовые услуги",
-			},
-		},
-	}
-*/
-
 // @title Catalog App API
 // @version 0.0.1
 // @description API Server for company catalog
@@ -78,25 +42,23 @@ func main() {
 		logrus.Fatalf("👺👺👺 failed to initialize db: %s\n", err.Error())
 	}
 
-	// инит клин (репо-сервис-хендлер)
 	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
 
-	// ран сервер
 	srv := new(common.Server)
 	go func() {
 		if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 			logrus.Fatalf("error while running http server: %s\n", err.Error())
 		}
 	}()
-	logrus.Print("😀😀😀 app started 😀😀😀")
+	logrus.Print("😀😀😀 service started, documentation: http://localhost:80/swagger/index.html  😀😀😀")
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 	<-quit
 
-	logrus.Print("🧟🧟🧟 TodoApp Shutting Down 🧟🧟🧟")
+	logrus.Print("🧟🧟🧟 service shutting down 🧟🧟🧟")
 
 	if err := srv.Shutdown(context.Background()); err != nil {
 		logrus.Errorf("error occured on server shutting down: %s", err.Error())
@@ -107,6 +69,7 @@ func main() {
 	}
 }
 
+// initConfig - инициализация настроек конфига
 func initConfig() error {
 	viper.AddConfigPath("configs")
 	viper.SetConfigName("config")

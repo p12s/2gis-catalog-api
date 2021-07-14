@@ -17,6 +17,7 @@ func NewRubricPostgres(db *sqlx.DB) *RubricPostgres {
 	return &RubricPostgres{db: db}
 }
 
+// Create - создание
 func (r *RubricPostgres) Create(name string, parentRubricId int) (int, error) {
 	var row *sql.Row
 	if parentRubricId == 0 {
@@ -35,6 +36,7 @@ func (r *RubricPostgres) Create(name string, parentRubricId int) (int, error) {
 	return rubricId, nil
 }
 
+// FindByName - поиска по имени
 func (r *RubricPostgres) FindByName(rubricName string) (common.Rubric, error) {
 	var exists common.Rubric
 	query := fmt.Sprintf("SELECT * FROM %s WHERE name=$1", rubricTable)
@@ -43,16 +45,4 @@ func (r *RubricPostgres) FindByName(rubricName string) (common.Rubric, error) {
 		return exists, err
 	}
 	return exists, err
-}
-
-func (r *RubricPostgres) GetAll(rubricId int) ([]common.Rubric, error) {
-	return []common.Rubric{}, nil
-}
-
-func (r *RubricPostgres) GetById(rubricId int) (common.Rubric, error) {
-	return common.Rubric{}, nil
-}
-
-func (r *RubricPostgres) Delete(rubricId int) error {
-	return nil
 }

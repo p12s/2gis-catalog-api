@@ -9,7 +9,6 @@ require (
 	github.com/jmoiron/sqlx v1.3.4
 	github.com/joho/godotenv v1.3.0
 	github.com/lib/pq v1.10.2
-	github.com/p-12s/todo-list-rest-api v0.0.0-20210617123001-8b1ddc75644e
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/viper v1.8.1
 	github.com/swaggo/gin-swagger v1.3.0

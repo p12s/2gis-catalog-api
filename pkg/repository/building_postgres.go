@@ -50,6 +50,7 @@ func (b *BuildingPostgres) CreateNew(building common.BuildingCreateRequest) (int
 	return exists.Id, nil
 }
 
+// GetByCityStreetHouse - получить существующее здание в бд (если не существует - в объекте будут значения по-умолчанию)
 func (b *BuildingPostgres) GetByCityStreetHouse(cityId int, streetId int, house int) (common.Building, error) {
 	var exists common.Building
 	var isExists bool

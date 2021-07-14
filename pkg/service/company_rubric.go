@@ -5,19 +5,23 @@ import (
 	"github.com/p12s/2gis-catalog-api/pkg/repository"
 )
 
+// CompanyRubricService -  сервис рубрики компании
 type CompanyRubricService struct {
 	repo      repository.CompanyRubric
 	repoPhone repository.Phone
 }
 
+// NewCompanyRubricService - конструктор
 func NewCompanyRubricService(repo repository.CompanyRubric, repoPhone repository.Phone) *CompanyRubricService {
 	return &CompanyRubricService{repo: repo, repoPhone: repoPhone}
 }
 
+// Create - создать
 func (c *CompanyRubricService) Create(companyId, rubricId int) error {
 	return c.repo.Create(companyId, rubricId)
 }
 
+// GetAllRubricCompany - получить все компании по рубрике
 func (c *CompanyRubricService) GetAllRubricCompany(rubricId int) ([]common.CompanyResponse, error) {
 	var items []common.CompanyResponse
 	companies, err := c.repo.GetAllRubricCompany(rubricId)

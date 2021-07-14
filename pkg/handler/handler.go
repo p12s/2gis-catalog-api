@@ -10,6 +10,7 @@ import (
 	_ "github.com/p12s/2gis-catalog-api/docs"
 )
 
+// Handler - хендлер, принимающий слой сервисов
 type Handler struct {
 	services *service.Service
 }

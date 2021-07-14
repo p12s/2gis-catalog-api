@@ -5,27 +5,29 @@ import (
 	"github.com/p12s/2gis-catalog-api"
 )
 
+// Rubric - рубрика (предзаполненные в БД - Транспорт, Недвижимость и т.п.)
 type Rubric interface {
 	Create(name string, parentRubricId int) (int, error)
-	GetAll(rubricId int) ([]common.Rubric, error)
-	GetById(rubricId int) (common.Rubric, error)
-	Delete(rubricId int) error
 	FindByName(rubricName string) (common.Rubric, error)
 }
 
+// City - город
 type City interface {
 	CreateIfNotExists(name string) (int, error)
 }
 
+// Street - улица
 type Street interface {
 	CreateIfNotExists(cityId int, name string) (int, error)
 }
 
+// Phone - телефон
 type Phone interface {
 	Create(companyId int, number string) error
 	GetByCompanyId(companyId int) ([]common.Phone, error)
 }
 
+// Building - здание
 type Building interface {
 	Create(cityId, streetId, house int, point string) (int, error)
 	CreateNew(building common.BuildingCreateRequest) (int, error)
@@ -37,14 +39,13 @@ type Company interface {
 	Create(company common.CompanyCreateRequest) (int, error)
 	GetById(companyId int) (common.Company, error)
 	GetAllInBuilding(buildingId int) ([]common.Company, error)
-	GetAllByRubricId(rubricId int) ([]common.Company, error)
-	Delete(companyId int) error
 	Exists(name string) (bool, error)
 	OpenTransaction() error
 	RollbackTransaction() error
 	CloseTransaction() error
 }
 
+// CompanyRubric - рубрика компании
 type CompanyRubric interface {
 	Create(companyId, rubricId int) error
 	GetAllRubricCompany(rubricId int) ([]common.Company, error)

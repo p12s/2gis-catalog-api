@@ -24,6 +24,62 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/building/": {
+            "post": {
+                "description": "Add building into database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Building"
+                ],
+                "summary": "Add building",
+                "operationId": "add",
+                "parameters": [
+                    {
+                        "description": "Building created info",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/common.BuildingCreateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/building/all-company": {
             "get": {
                 "description": "Get all company registered in a building",
@@ -265,6 +321,34 @@ var doc = `{
         }
     },
     "definitions": {
+        "common.BuildingCreateRequest": {
+            "type": "object",
+            "required": [
+                "house"
+            ],
+            "properties": {
+                "city": {
+                    "description": "название города (если есть), используем при создании записей в БД, если такого еще нет",
+                    "type": "string"
+                },
+                "city_id": {
+                    "type": "integer"
+                },
+                "house": {
+                    "type": "integer"
+                },
+                "point": {
+                    "type": "string"
+                },
+                "street": {
+                    "description": "название улицы (если есть), используем при создании записей в БД, если такой улици еще нет",
+                    "type": "string"
+                },
+                "street_id": {
+                    "type": "integer"
+                }
+            }
+        },
         "common.CompanyCreateRequest": {
             "type": "object",
             "properties": {

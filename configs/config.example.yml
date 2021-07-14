@@ -3,7 +3,7 @@ port: "80"
 db:
   driver: "postgres"
   username: "postgres"
-  host: "db"
+  host: "db" # "db" for docker-compose; for localhost - "localhost"
   port: "5432"
   dbname: "postgres"
   sslmode: "disable"

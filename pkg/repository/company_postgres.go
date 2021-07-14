@@ -19,7 +19,7 @@ func NewCompanyPostgres(db *sqlx.DB) *CompanyPostgres {
 }
 
 // Create - создание компании
-// Считаем, что все города и улицы уже занесены в БД, здесь приходят их id, которые валидируем
+// Считаем, что все города и улицы уже занесены в БД, в текущем запросе приходят их id, которые не валидируем
 /* Пришедшее содержимое запроса в объекте common.Company:
 {
     "name": "Rambler", // создаем компанию (post)
@@ -59,6 +59,7 @@ func (c *CompanyPostgres) Create(company common.CompanyCreateRequest) (int, erro
 	return companyId, nil
 }
 
+// Exists - проверка компании на существование
 func (c *CompanyPostgres) Exists(name string) (bool, error) {
 	var isExists bool
 	query := fmt.Sprintf("SELECT exists (SELECT * FROM %s WHERE name=$1 LIMIT 1)", companyTable)
@@ -69,6 +70,7 @@ func (c *CompanyPostgres) Exists(name string) (bool, error) {
 	return isExists, nil
 }
 
+// OpenTransaction - открытие транзакци (нужно тестить, возможно не работает так как нужно)
 func (c *CompanyPostgres) OpenTransaction() error {
 	var err error
 	c.tx, err = c.db.Begin()
@@ -79,6 +81,7 @@ func (c *CompanyPostgres) OpenTransaction() error {
 	return nil
 }
 
+// RollbackTransaction - откат транзакции
 func (c *CompanyPostgres) RollbackTransaction() error {
 	err := c.tx.Rollback()
 	if err != nil {
@@ -87,6 +90,7 @@ func (c *CompanyPostgres) RollbackTransaction() error {
 	return nil
 }
 
+// CloseTransaction - закрыте транзакции
 func (c *CompanyPostgres) CloseTransaction() error {
 	err := c.tx.Commit()
 	if err != nil {
@@ -95,6 +99,7 @@ func (c *CompanyPostgres) CloseTransaction() error {
 	return nil
 }
 
+// GetById - получить компанию по id
 func (c *CompanyPostgres) GetById(companyId int) (common.Company, error) {
 	var company common.Company
 	query := fmt.Sprintf(`SELECT id, name FROM %s WHERE id = $1`, companyTable)
@@ -105,6 +110,7 @@ func (c *CompanyPostgres) GetById(companyId int) (common.Company, error) {
 	return company, nil
 }
 
+// GetAllInBuilding - получить все компании по зданию
 func (c *CompanyPostgres) GetAllInBuilding(buildingId int) ([]common.Company, error) {
 	var items []common.Company
 	query := fmt.Sprintf(`SELECT id, name FROM %s WHERE building_id = $1`, companyTable)
@@ -113,12 +119,4 @@ func (c *CompanyPostgres) GetAllInBuilding(buildingId int) ([]common.Company, er
 	}
 
 	return items, nil
-}
-
-func (c *CompanyPostgres) GetAllByRubricId(rubricId int) ([]common.Company, error) {
-	return []common.Company{}, nil
-}
-
-func (c *CompanyPostgres) Delete(companyId int) error {
-	return nil
 }

@@ -4,9 +4,9 @@
 
 ([официальный репозиторий](https://github.com/swaggo/swag))
 ```go
-// @title Todo App API
+// @title App API
 // @version 1.0
-// @description API Server for TodoList Application
+// @description API Server for ...
 
 // @host localhost:80
 // @BasePath /
@@ -75,7 +75,7 @@ import (
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 
-	_ "github.com/p-12s/todo-list-rest-api/docs"
+	_ "github.com/p12s/2gis-catalog-api/docs"
 )
 ...
 

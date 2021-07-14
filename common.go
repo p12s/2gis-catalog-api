@@ -9,6 +9,7 @@ type Company struct {
 	Rubric   []Rubric `json:"rubric"`
 }
 
+// Phone - телефон
 type Phone struct {
 	Id        int    `json:"-" db:"id"`
 	CompanyId int    `json:"-" db:"company_id"`
@@ -26,10 +27,13 @@ type Building struct {
 	Point    string `json:"point" db:"point"`
 }
 
+// City - город
 type City struct {
 	Id   int    `json:"id" db:"id"`
 	Name string `json:"name" db:"name" binding:"required"`
 }
+
+// Street - улица
 type Street struct {
 	Id     int    `json:"id"`
 	CityId int    `json:"city_id" binding:"required"`
@@ -64,6 +68,7 @@ type CompanyCreateRequest struct {
 	} `json:"rubric"`
 }
 
+// CompanyResponse - объект компании, который отдаем как результат запроса
 type CompanyResponse struct {
 	Name   string  `json:"name"`
 	Phones []Phone `json:"phones"`

@@ -16,6 +16,7 @@ func NewCityPostgres(db *sqlx.DB) *CityPostgres {
 	return &CityPostgres{db: db}
 }
 
+// CreateIfNotExists - создание города, если он еще не существует
 func (c *CityPostgres) CreateIfNotExists(name string) (int, error) {
 	var cityId int
 	var isExists bool
