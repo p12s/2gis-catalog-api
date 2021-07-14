@@ -68,3 +68,13 @@ type CompanyResponse struct {
 	Name   string  `json:"name"`
 	Phones []Phone `json:"phones"`
 }
+
+// BuildingCreateRequest - пришедший запрос на создание здания
+type BuildingCreateRequest struct {
+	CityId   int    `json:"city_id" db:"city_id"`
+	City     string `json:"city" db:"-"` // название города (если есть), используем при создании записей в БД, если такого еще нет
+	StreetId int    `json:"street_id" db:"street_id"`
+	Street   string `json:"street" db:"-"` // название улицы (если есть), используем при создании записей в БД, если такой улици еще нет
+	House    int    `json:"house" db:"house" binding:"required"`
+	Point    string `json:"point" db:"point"`
+}

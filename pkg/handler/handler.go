@@ -27,10 +27,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	api := router.Group("/api")
 	{
-		city := api.Group("/city")
-		{
-			city.POST("/", h.createCity)
-		}
 		company := api.Group("/company")
 		{
 			company.POST("/", h.createCompany)
@@ -38,6 +34,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		}
 		building := api.Group("/building")
 		{
+			building.POST("/", h.add)
 			building.GET("/all-company", h.getAllCompany)
 		}
 		rubric := api.Group("/rubric")

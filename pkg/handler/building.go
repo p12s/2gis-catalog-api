@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	common "github.com/p12s/2gis-catalog-api"
 	"net/http"
 	"strconv"
 )
@@ -44,4 +45,33 @@ func (h *Handler) getAllCompany(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, items)
+}
+
+// @Summary Add building
+// @Tags Building
+// @Description Add building into database
+// @ID add
+// @Produce  json
+// @Param input body common.BuildingCreateRequest true "Building created info"
+// @Success 200 {string} string "id"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /api/building/ [post]
+func (h *Handler) add(c *gin.Context) {
+	var input common.BuildingCreateRequest
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	id, err := h.services.Building.CreateNew(input)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"id": id,
+	})
 }

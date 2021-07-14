@@ -17,7 +17,7 @@ func NewBuildingPostgres(db *sqlx.DB) *BuildingPostgres {
 	return &BuildingPostgres{db: db}
 }
 
-// Create - добаление здания
+// Create - добаление адреса здания по существующим id города и улицы
 // считаем, что принятые id города и улицы существуют в рамках БД (добавлены ранее)
 func (b *BuildingPostgres) Create(cityId, streetId, house int, point string) (int, error) {
 	var buildingId int
@@ -28,6 +28,26 @@ func (b *BuildingPostgres) Create(cityId, streetId, house int, point string) (in
 		return 0, err
 	}
 	return buildingId, nil
+}
+
+// CreateNew - создает новое здание по новому адресу
+// город и улица могт быть новыми - создаем полностью новый адрес
+func (b *BuildingPostgres) CreateNew(building common.BuildingCreateRequest) (int, error) {
+
+	exists, err := b.GetByCityStreetHouse(building.CityId, building.StreetId, building.House)
+	if err != nil && err != sql.ErrNoRows {
+		return 0, err
+	}
+
+	if exists.Id == 0 {
+		query := fmt.Sprintf("INSERT INTO %s (city_id, street_id, house, point) values ($1, $2, $3, $4) RETURNING id", buildingTable)
+		row := b.db.QueryRow(query, building.CityId, building.StreetId, building.House, building.Point)
+		if err := row.Scan(&exists.Id); err != nil {
+			return 0, err
+		}
+	}
+
+	return exists.Id, nil
 }
 
 func (b *BuildingPostgres) GetByCityStreetHouse(cityId int, streetId int, house int) (common.Building, error) {

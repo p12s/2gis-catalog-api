@@ -167,7 +167,7 @@ func (c *CompanyService) Create(requestCompany common.CompanyCreateRequest) (int
 		}
 	}
 
-	return companyId, err
+	return companyId, c.repo.CloseTransaction()
 }
 
 func (c *CompanyService) GetById(companyId int) (common.CompanyResponse, error) {

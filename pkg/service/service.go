@@ -13,15 +13,11 @@ type Rubric interface {
 }
 
 type City interface {
-	Create(city common.City) (int, error)
-	GetById(cityId int) (common.City, error)
-	Delete(streetId int) error
+	CreateIfNotExists(name string) (int, error)
 }
 
 type Street interface {
-	Create(street common.Street) (int, error)
-	GetByName(streetName string, cityId int) (common.Street, error)
-	Delete(streetId int) error
+	CreateIfNotExists(cityId int, name string) (int, error)
 }
 
 type Phone interface {
@@ -31,6 +27,7 @@ type Phone interface {
 
 type Building interface {
 	Create(cityId, streetId, house int, point string) (int, error)
+	CreateNew(building common.BuildingCreateRequest) (int, error)
 	GetAllCompany(cityId, streetId, house int) ([]common.CompanyResponse, error)
 }
 
@@ -65,7 +62,7 @@ func NewService(repos *repository.Repository) *Service {
 		Rubric:        NewRubricService(repos.Rubric),
 		City:          NewCityService(repos.City),
 		Street:        NewStreetService(repos.Street),
-		Building:      NewBuildingService(repos.Building, repos.Company, repos.Phone),
+		Building:      NewBuildingService(repos.Building, repos.Company, repos.Phone, repos.City, repos.Street),
 		Company:       NewCompanyService(repos.Company, repos.Building, repos.Phone, repos.Rubric, repos.CompanyRubric),
 		CompanyRubric: NewCompanyRubricService(repos.CompanyRubric, repos.Phone),
 		Phone:         NewPhoneService(repos.Phone),

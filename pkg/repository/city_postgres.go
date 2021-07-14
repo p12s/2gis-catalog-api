@@ -1,8 +1,9 @@
 package repository
 
 import (
+	"database/sql"
+	"fmt"
 	"github.com/jmoiron/sqlx"
-	"github.com/p12s/2gis-catalog-api"
 )
 
 // CityPostgres - репозиторий
@@ -15,14 +16,29 @@ func NewCityPostgres(db *sqlx.DB) *CityPostgres {
 	return &CityPostgres{db: db}
 }
 
-func (c *CityPostgres) Create(city common.City) (int, error) {
-	return 99, nil
-}
+func (c *CityPostgres) CreateIfNotExists(name string) (int, error) {
+	var cityId int
+	var isExists bool
 
-func (c *CityPostgres) GetById(cityId int) (common.City, error) {
-	return common.City{}, nil
-}
+	query := fmt.Sprintf("SELECT exists (SELECT * FROM %s WHERE name=$1)", cityTable)
+	err := c.db.QueryRow(query, name).Scan(&isExists)
+	if err != nil && err != sql.ErrNoRows {
+		return 0, err
+	}
 
-func (c *CityPostgres) Delete(streetId int) error {
-	return nil
+	if !isExists {
+		query := fmt.Sprintf("INSERT INTO %s (name) values ($1) RETURNING id", cityTable)
+		row := c.db.QueryRow(query, name)
+		if err := row.Scan(&cityId); err != nil {
+			return 0, err
+		}
+	} else {
+		query := fmt.Sprintf("SELECT id FROM %s WHERE name=$1", cityTable)
+		err := c.db.QueryRow(query, name).Scan(&cityId)
+		if err != nil {
+			return 0, err
+		}
+	}
+
+	return cityId, nil
 }

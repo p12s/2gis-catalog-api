@@ -14,15 +14,11 @@ type Rubric interface {
 }
 
 type City interface {
-	Create(city common.City) (int, error)
-	GetById(cityId int) (common.City, error)
-	Delete(streetId int) error
+	CreateIfNotExists(name string) (int, error)
 }
 
 type Street interface {
-	Create(street common.Street) (int, error)
-	GetByName(streetName string, cityId int) (common.Street, error)
-	Delete(streetId int) error
+	CreateIfNotExists(cityId int, name string) (int, error)
 }
 
 type Phone interface {
@@ -31,16 +27,17 @@ type Phone interface {
 }
 
 type Building interface {
-	Create(cityId, streetId, house int, point string) (int, error) // TODO добавление в справочник здания вместе с организациями, которые в ней находятся
+	Create(cityId, streetId, house int, point string) (int, error)
+	CreateNew(building common.BuildingCreateRequest) (int, error)
 	GetByCityStreetHouse(cityId int, streetId int, house int) (common.Building, error)
 }
 
 // Company - компания
 type Company interface {
 	Create(company common.CompanyCreateRequest) (int, error)
-	GetById(companyId int) (common.Company, error)             // TODO выдачу информации об организациях по их идентификаторам
-	GetAllInBuilding(buildingId int) ([]common.Company, error) // TODO выдачу всех организаций находящихся в конкретном здании
-	GetAllByRubricId(rubricId int) ([]common.Company, error)   // TODO выдачу списка всех организаций, которые относятся к указанной рубрике
+	GetById(companyId int) (common.Company, error)
+	GetAllInBuilding(buildingId int) ([]common.Company, error)
+	GetAllByRubricId(rubricId int) ([]common.Company, error)
 	Delete(companyId int) error
 	Exists(name string) (bool, error)
 	OpenTransaction() error

@@ -1,8 +1,9 @@
 package repository
 
 import (
+	"database/sql"
+	"fmt"
 	"github.com/jmoiron/sqlx"
-	"github.com/p12s/2gis-catalog-api"
 )
 
 // StreetPostgres - репозиторий
@@ -15,14 +16,27 @@ func NewStreetPostgres(db *sqlx.DB) *StreetPostgres {
 	return &StreetPostgres{db: db}
 }
 
-func (s *StreetPostgres) Create(street common.Street) (int, error) {
-	return 99, nil
-}
+func (s *StreetPostgres) CreateIfNotExists(cityId int, name string) (int, error) {
+	var streetId int
+	var isExists bool
 
-func (s *StreetPostgres) GetByName(streetName string, cityId int) (common.Street, error) {
-	return common.Street{}, nil
-}
+	query := fmt.Sprintf("SELECT exists (SELECT * FROM %s WHERE city_id=$1 AND name=$2)", streetTable)
+	err := s.db.QueryRow(query, cityId, name).Scan(&isExists)
+	if err != nil && err != sql.ErrNoRows {
+		return 0, err
+	}
 
-func (s *StreetPostgres) Delete(streetId int) error {
-	return nil
+	if !isExists {
+		query := fmt.Sprintf("INSERT INTO %s (city_id, name) values ($1, $2) RETURNING id", streetTable)
+		if err := s.db.QueryRow(query, cityId, name).Scan(&streetId); err != nil {
+			return 0, err
+		}
+	} else {
+		query := fmt.Sprintf("SELECT id FROM %s WHERE city_id=$1 AND name=$2", streetTable)
+		if err := s.db.QueryRow(query, cityId, name).Scan(&streetId); err != nil {
+			return 0, err
+		}
+	}
+
+	return streetId, nil
 }

@@ -9,22 +9,74 @@ type BuildingService struct {
 	repo        repository.Building
 	repoCompany repository.Company
 	repoPhone   repository.Phone
+	repoCity    repository.City
+	repoStreet  repository.Street
 }
 
 func NewBuildingService(
 	repo repository.Building,
 	repoCompany repository.Company,
 	repoPhone repository.Phone,
+	repoCity repository.City,
+	repoStreet repository.Street,
 ) *BuildingService {
 	return &BuildingService{
 		repo:        repo,
 		repoCompany: repoCompany,
 		repoPhone:   repoPhone,
+		repoCity:    repoCity,
+		repoStreet:  repoStreet,
 	}
 }
 
 func (b *BuildingService) Create(cityId, streetId, house int, point string) (int, error) {
 	return b.repo.Create(cityId, streetId, house, point)
+}
+
+func (b *BuildingService) CreateNew(building common.BuildingCreateRequest) (int, error) {
+	err := b.repoCompany.OpenTransaction()
+	if err != nil {
+		return 0, err
+	}
+
+	// сохраним город, если пришло только его название
+	if building.CityId == 0 && building.City != "" {
+		cityId, err := b.repoCity.CreateIfNotExists(building.City)
+		if err != nil {
+
+			rollbackErr := b.repoCompany.RollbackTransaction()
+			if rollbackErr != nil {
+				return 0, rollbackErr
+			}
+			return 0, err
+		}
+		building.CityId = cityId
+	}
+
+	// сохраним улицу, если пришло только ее название
+	if building.StreetId == 0 && building.Street != "" {
+		streetId, err := b.repoStreet.CreateIfNotExists(building.CityId, building.Street)
+		if err != nil {
+
+			rollbackErr := b.repoCompany.RollbackTransaction()
+			if rollbackErr != nil {
+				return 0, rollbackErr
+			}
+			return 0, err
+		}
+		building.StreetId = streetId
+	}
+
+	buildingId, err := b.repo.CreateNew(building)
+	if err != nil {
+		rollbackErr := b.repoCompany.RollbackTransaction()
+		if rollbackErr != nil {
+			return 0, rollbackErr
+		}
+		return 0, err
+	}
+
+	return buildingId, b.repoCompany.CloseTransaction()
 }
 
 func (b *BuildingService) GetAllCompany(cityId, streetId, house int) ([]common.CompanyResponse, error) {

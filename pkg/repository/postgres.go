@@ -11,7 +11,6 @@ const (
 	streetTable        = "street"
 	buildingTable      = "building"
 	companyTable       = "company"
-	companyPhoneTable  = "company_phone"
 	companyRubricTable = "company_rubric"
 	phoneTable         = "phone"
 )
