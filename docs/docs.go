@@ -27,9 +27,6 @@ var doc = `{
         "/api/building/all-company": {
             "get": {
                 "description": "Get all company registered in a building",
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -99,6 +96,58 @@ var doc = `{
             }
         },
         "/api/company/": {
+            "get": {
+                "description": "Get company by id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Company"
+                ],
+                "summary": "Get company by id",
+                "operationId": "getCompany",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Company id",
+                        "name": "company_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/common.CompanyResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Creating company with minimal required data",
                 "consumes": [
@@ -128,6 +177,63 @@ var doc = `{
                         "description": "id",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/handler.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/rubric/all-company": {
+            "get": {
+                "description": "Get all rubric company (without pagination)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rubric"
+                ],
+                "summary": "Get all company in a rubric",
+                "operationId": "getAllRubricCompany",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Rubric id",
+                        "name": "rubric_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/common.CompanyResponse"
+                            }
                         }
                     },
                     "400": {

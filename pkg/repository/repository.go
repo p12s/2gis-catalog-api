@@ -50,6 +50,7 @@ type Company interface {
 
 type CompanyRubric interface {
 	Create(companyId, rubricId int) error
+	GetAllRubricCompany(rubricId int) ([]common.Company, error)
 }
 
 // Repository - репозитрий

@@ -37,7 +37,7 @@ type Building interface {
 // Company - компания
 type Company interface {
 	Create(company common.CompanyCreateRequest) (int, error)
-	GetById(companyId int) (common.Company, error)
+	GetById(companyId int) (common.CompanyResponse, error)
 	GetAllInBuilding(buildingId int) ([]common.Company, error)
 	GetAllByRubricId(rubricId int) ([]common.Company, error)
 	Delete(companyId int) error
@@ -45,6 +45,7 @@ type Company interface {
 
 type CompanyRubric interface {
 	Create(companyId, rubricId int) error
+	GetAllRubricCompany(rubricId int) ([]common.CompanyResponse, error)
 }
 
 // Service - сервис
@@ -66,7 +67,7 @@ func NewService(repos *repository.Repository) *Service {
 		Street:        NewStreetService(repos.Street),
 		Building:      NewBuildingService(repos.Building, repos.Company, repos.Phone),
 		Company:       NewCompanyService(repos.Company, repos.Building, repos.Phone, repos.Rubric, repos.CompanyRubric),
-		CompanyRubric: NewCompanyRubricService(repos.CompanyRubric),
+		CompanyRubric: NewCompanyRubricService(repos.CompanyRubric, repos.Phone),
 		Phone:         NewPhoneService(repos.Phone),
 	}
 }

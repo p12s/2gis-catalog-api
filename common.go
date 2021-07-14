@@ -5,8 +5,8 @@ type Company struct {
 	Id       int      `json:"id" db:"id"`
 	Name     string   `json:"name" db:"name" binding:"required"`
 	Phones   []Phone  `json:"phones"`
-	Building Building `json:"building" binding:"required"`
-	Rubric   []Rubric `json:"rubric" binding:"required"`
+	Building Building `json:"building"`
+	Rubric   []Rubric `json:"rubric"`
 }
 
 type Phone struct {

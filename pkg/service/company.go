@@ -170,8 +170,23 @@ func (c *CompanyService) Create(requestCompany common.CompanyCreateRequest) (int
 	return companyId, err
 }
 
-func (c *CompanyService) GetById(companyId int) (common.Company, error) {
-	return c.repo.GetById(companyId)
+func (c *CompanyService) GetById(companyId int) (common.CompanyResponse, error) {
+	result := common.CompanyResponse{}
+	// компания
+	company, err := c.repo.GetById(companyId)
+	if err != nil {
+		return result, err
+	}
+
+	// телефоны
+	companyPhones, err := c.repoPhone.GetByCompanyId(company.Id)
+	if err != nil {
+		return result, err
+	}
+
+	result.Name = company.Name
+	result.Phones = companyPhones
+	return result, nil
 }
 
 func (c *CompanyService) GetAllInBuilding(buildingId int) ([]common.Company, error) {

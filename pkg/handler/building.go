@@ -10,7 +10,6 @@ import (
 // @Tags Building
 // @Description Get all company registered in a building
 // @ID getAllCompany
-// @Accept  json
 // @Produce  json
 // @Param city_id query integer true "City id"
 // @Param street_id query integer true "Street id"
@@ -24,17 +23,17 @@ func (h *Handler) getAllCompany(c *gin.Context) {
 	getParams := c.Request.URL.Query()
 	cityId, err := strconv.Atoi(getParams["city_id"][0])
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid item city_id param")
+		newErrorResponse(c, http.StatusBadRequest, "invalid city_id param")
 		return
 	}
 	streetId, err := strconv.Atoi(getParams["street_id"][0])
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid item street_id param")
+		newErrorResponse(c, http.StatusBadRequest, "invalid street_id param")
 		return
 	}
 	house, err := strconv.Atoi(getParams["house"][0])
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid item house param")
+		newErrorResponse(c, http.StatusBadRequest, "invalid house param")
 		return
 	}
 
