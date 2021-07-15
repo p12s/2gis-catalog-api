@@ -18,6 +18,9 @@
 git clone https://github.com/p12s/2gis-catalog-api.git
 cd 2gis-catalog-api
 
+mv configs/config.example.yml configs/config.yml
+mv .env.example .env
+
 make init
 ```
 Что происходит:
