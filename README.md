@@ -1,6 +1,6 @@
 ![License](https://img.shields.io/github/license/p12s/2gis-catalog-api)
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/p12s/2gis-catalog-api?style=plastic)
-[![Coverage Status](https://codecov.io/gh/p12s/2gis-catalog-api/branch/master/graph/badge.svg?token=sTWAW1J7hW)](https://codecov.io/gh/p12s/2gis-catalog-api)
+[![Coverage Status](https://codecov.io/gh/p12s/2gis-catalog-api/branch/master/graph/badge.svg?token=42BNM9JDAP)](https://codecov.io/gh/p12s/2gis-catalog-api)
 [![Go Report Card](https://goreportcard.com/badge/github.com/p12s/2gis-catalog-api)](https://goreportcard.com/report/github.com/p12s/2gis-catalog-api)
 <img src="https://github.com/p12s/2gis-catalog-api/workflows/lint-build/badge.svg?branch=master">
 
