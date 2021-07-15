@@ -52,7 +52,7 @@ func main() {
 			logrus.Fatalf("error while running http server: %s\n", err.Error())
 		}
 	}()
-	logrus.Print("😀😀😀 service started, documentation: http://localhost:80/swagger/index.html  😀😀😀")
+	logrus.Print("😀😀😀 service started, documentation: http://localhost:80/swagger/index.html  😀😀😀!")
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
