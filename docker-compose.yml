@@ -1,9 +1,11 @@
-version: '3.8'
+version: '3.9'
 
 services:
   db:
     restart: always
-    image: postgres:latest
+    build:
+      context: ./
+      dockerfile: ./schema/Dockerfile
     networks:
       new:
         aliases:
@@ -12,24 +14,14 @@ services:
       - ./.database/postgres/data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=qwerty
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
     ports:
       - 5432:5432
-  db-migrations:
-    image: migrate/migrate:latest
-    environment:
-      - DB_PASSWORD=qwerty
-    env_file:
-      - ./.env
-    networks:
-      - new
-    volumes:
-      - ./schema:/migrations
-    command: sh -c "./wait-for-postgres.sh db; /db-migrations" && [ "migrate", "-path", "/migrations/", "-database",  "postgres://postgres:qwerty@db:5432/postgres?sslmode=disable", "up" ]
-    # migrate -path ./schema -database 'postgres://postgres:qwerty@localhost:5432/postgres?sslmode=disable' up
-    depends_on:
-      - db
   app:
-    build: ./
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
     networks:
       - new
     command: sh -c "./wait-for-postgres.sh db; ./app"
@@ -37,7 +29,6 @@ services:
       - 80:80
     depends_on:
       - db
-      - db-migrations
     environment:
       - DB_PASSWORD=qwerty
 

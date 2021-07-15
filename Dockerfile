@@ -1,12 +1,15 @@
 FROM golang:1.16.5-buster AS build
 
+# All these steps will be cached
 RUN go version
 ENV GOPATH=/
 WORKDIR /src/
 COPY ./ /src/
 
-# build go app
-RUN go mod download; CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -tags netgo -a -v -o /app ./cmd/main.go
+# Get dependancies - will also be cached if we won't change mod/sum
+RUN go mod download
+# Build the binary
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -tags netgo -a -v -o /app ./cmd/main.go
 
 FROM alpine:latest
 
